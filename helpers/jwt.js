@@ -1,10 +1,11 @@
 const { sign, verify } = require("jsonwebtoken");
+const { SECRET_KEY_JWT  } = require("./env-var")
 
 const generateJWT = ( uid ) => {
    try {
       return new Promise( ( resolve, reject ) => {
          const payload = { uid }
-         const secret = process.env.KEY_SECRET
+         const secret = SECRET_KEY_JWT
 
          sign( payload, secret, { expiresIn: 60*60*48 }, ( err, token ) => {
             
@@ -29,7 +30,7 @@ const checkIdByJWT = ( token = "" ) => {
          return null
       }
 
-      const secret = process.env.SECRET_JWT
+      const secret = SECRET_KEY_JWT
 
       const { uid } = verify( token, secret )
 

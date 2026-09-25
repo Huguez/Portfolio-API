@@ -1,9 +1,12 @@
 const { request, responce } = require( "express" );
 const { verify, TokenExpiredError } = require("jsonwebtoken")
+const { SECRET_KEY_JWT } = require("../helpers/env-var")
 
 const validateJWT = ( req = request, res = responce, next ) => {
    try {
-      const token = req.header( "x-token" )
+      const auth = req.header( "Authorization" )
+      const token = auth.split( ' ' )[1]
+      console.log(token);
       if ( !token ) {
          return res.status( 401 ).json( {
             ok: false,
@@ -11,7 +14,7 @@ const validateJWT = ( req = request, res = responce, next ) => {
          } )
       }
 
-      const secret = process.env.KEY_SECRET
+      const secret = SECRET_KEY_JWT
 
       const payload = verify( token, secret )
 

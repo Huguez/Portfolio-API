@@ -1,7 +1,7 @@
 
 const cloudinary = require("cloudinary").v2
 
-const { CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET } = process.env
+const { CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET } = require("./env-var")
 
 cloudinary.config({
    cloud_name: CLOUD_NAME,

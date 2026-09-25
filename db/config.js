@@ -1,15 +1,13 @@
 const { default: mongoose } = require("mongoose");
-const dotenv = require("dotenv")
-dotenv.config()
+const { DB_CNN, DATABASE } = require("../helpers/env-var")
 
-const cnn = process.env.DB_CNN
-const database = process.env.DATABASE
+const cnn = DB_CNN
+const database = DATABASE
 
 const connectDB = ( callback ) => {
    try {
       mongoose.connect( `${ cnn }/${ database }`, {} ).then( () =>{
-         console.log("");
-         console.log( "DB connected Successfully!!!");
+         console.log( "\nDB connected Successfully!!!");
          callback()
       } ).catch( error => {
          console.log( error  );

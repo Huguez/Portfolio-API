@@ -32,7 +32,7 @@ $ npm install
 ```
 CONTAINER_NAME  = ********
 MONGODB_PORT    = ********
-KEY_SECRET      = ********
+SECRET_KEY_JWT  = ********
 
 CLOUD_NAME       = ********
 CLOUD_API_KEY    = ********
@@ -44,6 +44,9 @@ PORT       = ********
 DATABASE   = ********
 
 EMAIL      = ********
+
+# default
+NODE_ENV=develop
 ```
 
 4.- execute command

@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require("cors")
 const path = require('path')
 const connectDB = require("../db/config")
+const { PORT } = require("../helpers/env-var")
 
 const authRoute = require("../routes/auth")
 const articleRoute = require("../routes/article")
@@ -15,7 +16,7 @@ const notFound = require("../middleware/notFound")
 class Server {
 
    constructor() {
-      this.port = process.env.PORT || 8080
+      this.port = PORT;
       this.app = express()
 
       this.#middleware()
@@ -35,15 +36,15 @@ class Server {
    }
 
    #routes(){
-      this.app.use( "/auth", authRoute )
+      this.app.use( "/api/auth", authRoute )
 
-      this.app.use( '/articles', articleRoute )
+      this.app.use( "/api/articles", articleRoute )
 
-      this.app.use( "/jobs", jobRoute )
+      this.app.use( "/api/jobs", jobRoute )
 
-      this.app.use( "/certifications", certificationRoute )
+      this.app.use( "/api/certifications", certificationRoute )
 
-      this.app.use( "/user", userRoute )
+      this.app.use( "/api/user", userRoute )
 
       this.app.use( "/*", notFound )
    }

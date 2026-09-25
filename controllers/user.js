@@ -1,10 +1,10 @@
 const fs = require("fs")
 const https = require("https")
 const { upload, destroy } = require("../helpers/cloudinary")
-
+const { EMAIL }= require("../helpers/env-var")
 const User = require("../models/User")
 
-const adminEmail = process.env.EMAIL
+const adminEmail = EMAIL
 
 const getAboutMe = async ( req = request, res = response ) => {
    try {
