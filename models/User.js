@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose")
+const { Roles } = require("../constans/roles")
 
-const UserSchema = Schema( {
+const UserSchema = Schema({
    username: {
       type: Schema.Types.String,
       required: true,
@@ -9,13 +10,19 @@ const UserSchema = Schema( {
       type: Schema.Types.String,
       required: true,
       unique: true,
-   }, 
+   },
    password: {
       type: Schema.Types.String,
       required: true,
    },
-   description:{
-      type: [ Schema.Types.String ],
+   role: {
+      type: Schema.Types.String,
+      enum: [ Roles.ADMIN, Roles.USER ],
+      default: Roles.USER,
+      required: true,
+   },
+   description: {
+      type: [Schema.Types.String],
       required: false,
       default: [],
    },
@@ -31,12 +38,12 @@ const UserSchema = Schema( {
    }
 }, {
    timestamps: true
-} )
+})
 
-UserSchema.method( "toJSON", function( doc, ret ){
+UserSchema.method("toJSON", function (doc, ret) {
    const { __v, _id, password, ...obj } = this.toObject()
    obj.uid = _id
    return obj
-} )
+})
 
-module.exports = model( "User", UserSchema )
+module.exports = model("User", UserSchema)

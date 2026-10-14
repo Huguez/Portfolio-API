@@ -19,7 +19,6 @@ router.post( '/login', [
 ], login )
 
 router.post( '/register',[
-
    check( "username", "Username is required" ).notEmpty(),
    check( "username", "Username is too short, must be at least 4 characters" ).isLength( { min: 4 } ),
 
@@ -34,5 +33,6 @@ router.post( '/register',[
 
    validarCampos
 ], register )
+
 
 module.exports = router

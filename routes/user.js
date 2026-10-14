@@ -29,7 +29,7 @@ router.get( "/aboutMe",  getAboutMe )
 
 router.get( "/getResume", getResume )
 
-router.put( "/:id/updateUser", [
+router.put( "/updateUser", [
    upload.fields( [ { name: 'photo', maxCount: 1 }, { name: "cv", maxCount: 1 } ] ),
    check( "username", "Username is required" ).isString().notEmpty(),
    check( "description", "Description is required" ).isString().notEmpty(),

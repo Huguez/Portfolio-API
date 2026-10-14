@@ -7,7 +7,7 @@ const generateJWT = ( uid ) => {
          const payload = { uid }
          const secret = SECRET_KEY_JWT
 
-         sign( payload, secret, { expiresIn: 60*60*48 }, ( err, token ) => {
+         sign( payload, secret, { expiresIn: '48h', algorithm: 'HS256' }, ( err, token ) => {
             
             if ( err ) {
                console.log( err );
