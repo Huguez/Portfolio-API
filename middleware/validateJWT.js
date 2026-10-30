@@ -6,7 +6,7 @@ const validateJWT = ( req = request, res = responce, next ) => {
    try {
       const auth = req.header( "Authorization" )
       const token = auth.split( ' ' )[1]
-      console.log(token);
+      
       if ( !token ) {
          return res.status( 401 ).json( {
             ok: false,
@@ -15,9 +15,9 @@ const validateJWT = ( req = request, res = responce, next ) => {
       }
 
       const secret = SECRET_KEY_JWT
-
-      const payload = verify( token, secret )
-
+      
+      const payload = verify( token, secret, { algorithms: ['HS256'] } )
+      
       req.uid = payload.uid
 
       return next()

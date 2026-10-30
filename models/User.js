@@ -17,14 +17,14 @@ const UserSchema = Schema({
    },
    role: {
       type: Schema.Types.String,
-      enum: [ Roles.ADMIN, Roles.USER ],
+      enum: [Roles.ADMIN, Roles.USER],
       default: Roles.USER,
       required: true,
    },
    description: {
-      type: [Schema.Types.String],
+      type: Schema.Types.String,
       required: false,
-      default: [],
+      default: "",
    },
    image: {
       type: Schema.Types.String,
@@ -35,14 +35,17 @@ const UserSchema = Schema({
       type: Schema.Types.String,
       required: false,
       default: ""
-   }
+   },
+   certifications: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Certification',
+   }],
 }, {
    timestamps: true
 })
 
 UserSchema.method("toJSON", function (doc, ret) {
-   const { __v, _id, password, ...obj } = this.toObject()
-   obj.uid = _id
+   const { __v, _id, password, createdAt, updatedAt, role, ...obj } = this.toObject()
    return obj
 })
 

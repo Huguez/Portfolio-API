@@ -17,12 +17,22 @@ const CertificationScheme = Schema( {
    }
 }, {
    timestamps: true,
+   toJSON: {
+      transform: (doc, ret) => {
+        const {
+          _id,
+          __v,
+          createdAt,
+          updatedAt,
+          ...obj
+        } = ret;
+
+        obj.id = _id.toString();
+
+        return obj;
+      },
+   }
 } )
 
-CertificationScheme.method( "toJSON", function( doc, ret ){
-   const { __v, _id, ...obj } = this.toObject()
-   obj.id = _id
-   return obj
-} )
 
 module.exports = model( "Certification", CertificationScheme )

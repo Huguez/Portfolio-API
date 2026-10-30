@@ -25,7 +25,7 @@ const login = async ( req = request, res = response ) => {
          } )
       }
 
-      const token = await generateJWT( user.uid )
+      const token = await generateJWT( user._id.toString() )
 
       return res.status( 200 ).json( {
          ok: true,
@@ -59,7 +59,7 @@ const register = async ( req = request, res = response ) => {
 
       const user = await newUser.save()
 
-      const token = await generateJWT( user.uid )
+      const token = await generateJWT( user._id )
 
       return res.status( 200 ).json( {
          ok: true,

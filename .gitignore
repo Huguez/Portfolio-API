@@ -130,5 +130,10 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+
 # dockers
 portafolio_vol/
+
+
+# images
+public/uploads
