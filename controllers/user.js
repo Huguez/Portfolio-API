@@ -4,6 +4,7 @@ const { upload, destroy } = require("../helpers/cloudinary")
 const { EMAIL } = require("../helpers/env-var")
 const User = require("../models/User")
 const Certification = require("../models/Certification")
+const Skill = require("../models/Skill")
 
 const adminEmail = EMAIL
 
@@ -11,7 +12,8 @@ const getAboutMe = async (req = request, res = response) => {
    try {
 
       const admin = await User.findOne({ email: adminEmail })
-         .populate("certifications");
+         .populate("certifications", "imagen title link")
+         .populate("skills", "name stars");
 
       if (!admin) {
          return res.status(404).json({
@@ -39,7 +41,7 @@ const updateAboutMe = async (req = request, res = response) => {
 
       const { cv, photo } = req.files
 
-      const { username, description, certifications } = req.body
+      const { username, description, certifications, skills } = req.body
 
       const admin = await User.findById(uid)
 
@@ -133,24 +135,11 @@ const updateAboutMe = async (req = request, res = response) => {
       admin.username = username
       admin.description = description
 
-      const length = admin.certifications.length
+      const certificationsProspectus = [...JSON.parse( certifications )]
+      
+      await Certification.deleteMany({})
 
-      const certificationsToDeleted = await Certification.deleteMany({
-         _id: {
-            $in: [admin.certifications]
-         }
-      })
-
-      if (certificationsToDeleted.deletedCount !== length) {
-         return res.status(200).json({
-            ok: false,
-            msg: "something get wrong with the updating certifications"
-         })
-      }
-
-      const newsCertifications = [...JSON.parse(certifications)]
-
-      const certificationsPromises = newsCertifications.map(async (cer) => {
+      const certificationsPromises = certificationsProspectus.map(async (cer) => {
          const certification = new Certification(cer)
          await certification.save()
          return certification._id;
@@ -159,6 +148,20 @@ const updateAboutMe = async (req = request, res = response) => {
       const realCertifications = await Promise.all(certificationsPromises)
 
       admin.certifications = [...realCertifications]
+
+      const skillsProspectus = [...JSON.parse(skills)]
+      
+      await Skill.deleteMany({})
+
+      const skillsPromises = skillsProspectus.map(async (s) => {
+         const skill = new Skill(s)
+         await skill.save()
+         return skill._id;
+      })
+
+      const realSkills = await Promise.all(skillsPromises)
+
+      admin.skills = [...realSkills]
 
       await admin.save()
 

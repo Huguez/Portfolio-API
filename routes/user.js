@@ -29,32 +29,36 @@ router.get("/aboutMe", getAboutMe)
 
 router.get("/getResume", getResume)
 
-router.put("/aboutMe",
-   upload.fields([{ name: 'photo', maxCount: 1 }, { name: "profile-image", maxCount: 1 }]),
-   check("username", "Username is required")
-      .isString()
-      .notEmpty(),
-   body("description", "Description is required")
-      .isString()
-      .notEmpty(),
-   body("certifications.*")
-      .isObject({ strict: true })
-      .withMessage("Each certification must be an object"),
-   body("certifications.*.image")
-      .isString()
-      .withMessage("image must be a string")
-      .notEmpty()
-      .withMessage("image is required"),
-   body("certifications.*.title")
-      .isString()
-      .withMessage("title must be a string")
-      .notEmpty()
-      .withMessage("title is required"),
-   body("certifications.*.link")
-      .isString()
-      .withMessage("link must be a string")
-      .notEmpty()
-      .withMessage("link is required"),
+router.put("/aboutMe", [
+      upload.fields([{ name: 'photo', maxCount: 1 }, { name: "profile-image", maxCount: 1 }]),
+      check("username", "Username is required")
+         .isString()
+         .notEmpty(),
+      body("description", "Description is required")
+         .isString()
+         .notEmpty(),
+      body("certifications.*")
+         .isObject({ strict: true })
+         .withMessage("Each certification must be an object"),
+      body("certifications.*.image")
+         .isString()
+         .withMessage("image must be a string")
+         .notEmpty()
+         .withMessage("image is required"),
+      body("certifications.*.title")
+         .isString()
+         .withMessage("title must be a string")
+         .notEmpty()
+         .withMessage("title is required"),
+      body("certifications.*.link")
+         .isString()
+         .withMessage("link must be a string")
+         .notEmpty()
+         .withMessage("link is required"),
+      body("skills.*")
+         .isObject({ strict: true })
+         .withMessage("Each certification must be an object"),
+   ],
    validarJWT,
    validarCampos,
    updateAboutMe

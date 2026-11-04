@@ -40,6 +40,10 @@ const UserSchema = Schema({
       type: Schema.Types.ObjectId,
       ref: 'Certification',
    }],
+   skills: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Skill',
+   }]
 }, {
    timestamps: true
 })

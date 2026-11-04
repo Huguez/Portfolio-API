@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose")
 
-const CertificationScheme = Schema( {
+const CertificationSchema = Schema( {
    imagen: {
       type: Schema.Types.String,
       required: false,
@@ -35,4 +35,4 @@ const CertificationScheme = Schema( {
 } )
 
 
-module.exports = model( "Certification", CertificationScheme )
+module.exports = model( "Certification", CertificationSchema )

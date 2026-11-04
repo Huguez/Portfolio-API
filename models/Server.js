@@ -8,7 +8,6 @@ const { PORT } = require("../helpers/env-var")
 const authRoute = require("../routes/auth")
 const articleRoute = require("../routes/article")
 const jobRoute = require("../routes/job")
-const certificationRoute = require("../routes/certification")
 const userRoute = require("../routes/user")
 
 const notFound = require("../middleware/notFound")
@@ -41,8 +40,6 @@ class Server {
       this.app.use( "/api/articles", articleRoute )
 
       this.app.use( "/api/jobs", jobRoute )
-
-      this.app.use( "/api/certifications", certificationRoute )
 
       this.app.use( "/api/user", userRoute )
 
