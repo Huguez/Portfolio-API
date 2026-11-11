@@ -43,7 +43,7 @@ const login = async ( req = request, res = response ) => {
 
 const register = async ( req = request, res = response ) => {
    try {
-      const { username, password, email } = req.body
+      const { fullname, password, email } = req.body
 
       const thereIsUser = await User.findOne( { email } )
       if( thereIsUser ){
@@ -53,7 +53,7 @@ const register = async ( req = request, res = response ) => {
          } )
       }
 
-      const newUser = new User( { username, password, email } )
+      const newUser = new User( { fullname, password, email } )
 
       newUser.password = bcrytpjs.hashSync( password, salt )
 

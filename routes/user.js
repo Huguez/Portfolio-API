@@ -31,7 +31,7 @@ router.get("/getResume", getResume)
 
 router.put("/aboutMe", [
       upload.fields([{ name: 'photo', maxCount: 1 }, { name: "profile-image", maxCount: 1 }]),
-      check("username", "Username is required")
+      check("fullname", "Fullname is required")
          .isString()
          .notEmpty(),
       body("description", "Description is required")

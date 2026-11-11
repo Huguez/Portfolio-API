@@ -41,7 +41,7 @@ const updateAboutMe = async (req = request, res = response) => {
 
       const { cv, photo } = req.files
 
-      const { username, description, certifications, skills } = req.body
+      const { fullname, description, certifications, skills } = req.body
 
       const admin = await User.findById(uid)
 
@@ -132,7 +132,7 @@ const updateAboutMe = async (req = request, res = response) => {
          admin.CV = resp.secure_url
       }
 
-      admin.username = username
+      admin.fullname = fullname
       admin.description = description
 
       const certificationsProspectus = [...JSON.parse( certifications )]

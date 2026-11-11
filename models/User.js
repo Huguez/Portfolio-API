@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose")
 const { Roles } = require("../constans/roles")
 
 const UserSchema = Schema({
-   username: {
+   fullname: {
       type: Schema.Types.String,
       required: true,
    },

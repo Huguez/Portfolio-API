@@ -19,8 +19,8 @@ router.post( '/login', [
 ], login )
 
 router.post( '/register',[
-   check( "username", "Username is required" ).notEmpty(),
-   check( "username", "Username is too short, must be at least 4 characters" ).isLength( { min: 4 } ),
+   check( "fullname", "Fullname is required" ).notEmpty(),
+   check( "fullname", "Fullname is too short, must be at least 13 characters" ).isLength( { min: 13 } ),
 
    check( "email", "E-mail is required" ).notEmpty(),
    check( "email", "Must be a e-mail valid" ).isEmail(),
