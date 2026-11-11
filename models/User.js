@@ -13,7 +13,7 @@ const UserSchema = Schema({
    },
    password: {
       type: Schema.Types.String,
-      required: true,
+      required: false,
    },
    role: {
       type: Schema.Types.String,

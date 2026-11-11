@@ -3,8 +3,6 @@ const bcrytpjs = require("bcryptjs")
 const User = require("../models/User")
 const { generateJWT } = require("../helpers/jwt")
 
-const salt = bcrytpjs.genSaltSync()
-
 const login = async ( req = request, res = response ) => {
    try {
       const { email, password } = req.body
@@ -41,41 +39,6 @@ const login = async ( req = request, res = response ) => {
    }
 }
 
-const register = async ( req = request, res = response ) => {
-   try {
-      const { fullname, password, email } = req.body
-
-      const thereIsUser = await User.findOne( { email } )
-      if( thereIsUser ){
-         return res.status( 400 ).json( {
-            ok: false,
-            msg: `E-mail ${ email } is already registered`
-         } )
-      }
-
-      const newUser = new User( { fullname, password, email } )
-
-      newUser.password = bcrytpjs.hashSync( password, salt )
-
-      const user = await newUser.save()
-
-      const token = await generateJWT( user._id )
-
-      return res.status( 200 ).json( {
-         ok: true,
-         token,
-         user,
-      } )
-   } catch (error) {
-      console.log( error );
-      return res.status( 500 ).json( {
-         ok: false,
-         msg: "Error - register",
-      } )
-   }
-}
-
 module.exports = {
    login,
-   register, 
 }

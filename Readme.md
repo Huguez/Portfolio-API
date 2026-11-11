@@ -49,12 +49,17 @@ EMAIL      = ********
 NODE_ENV=develop
 ```
 
-4.- execute command
+4.- bring up the database 
 ```bash
 $ docker compose up -d
 ```
 
-5.- Run the service in development
+5.- execute the seed
+```bash
+$ npm run seed
+```
+
+6.- Run the service in development
 ```$
 $ npm run dev
 ```

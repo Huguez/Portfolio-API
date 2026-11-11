@@ -134,6 +134,8 @@ dist
 # dockers
 portafolio_vol/
 
+# seed
+db/data.js
 
 # images
 public/uploads
