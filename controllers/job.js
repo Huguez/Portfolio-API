@@ -24,7 +24,6 @@ const createJob = async ( req, res ) => {
 
 const getAllJobs = async ( req, res ) => {
    try {
-      // ToDo: implementar query params
       const jobs = await Job.find({}).sort( { startDate: "desc" } )
 
 
@@ -37,32 +36,6 @@ const getAllJobs = async ( req, res ) => {
       return res.status( 500 ).json( {
          ok: false,
          msg: "Error - getAllJobs controller"
-      } )
-   }
-}
-
-const getJobById = async ( req, res ) => {
-   try {
-      const { id } = req.params
-
-      const job = await Job.findOne({ _id: id })
-
-      if ( !job ) {
-         return res.status( 404 ).json( {
-            ok: false,
-            msg: `Job with id: ${ id } not found`,
-         } )
-      }
-
-      return res.status( 200 ).json({
-         ok: true,
-         job,
-      } )
-   }catch( err ){
-      console.log( err );
-      return res.status( 500 ).json( {
-         ok: false,
-         msg: "Error - getJobById controller"
       } )
    }
 }
@@ -129,7 +102,6 @@ const deleteJob = async ( req, res ) => {
 module.exports = {
    createJob,
    getAllJobs,
-   getJobById,
    updateJob,
    deleteJob,
 }
