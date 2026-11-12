@@ -54,12 +54,17 @@ NODE_ENV=develop
 $ docker compose up -d
 ```
 
-5.- execute the seed
+5.- add a data file with all information about you
+```
+./db/data.js
+```
+
+6.- execute the seed
 ```bash
 $ npm run seed
 ```
 
-6.- Run the service in development
+7.- Run the service in development
 ```$
 $ npm run dev
 ```

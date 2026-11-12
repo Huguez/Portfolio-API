@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose")
 
 const CertificationSchema = Schema( {
-   imagen: {
+   image: {
       type: Schema.Types.String,
       required: false,
       default: "",
