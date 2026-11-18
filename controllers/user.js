@@ -1,6 +1,7 @@
 const fs = require("fs")
 const https = require("https")
 const { upload, destroy } = require("../helpers/cloudinary")
+const { uploadCV } = require("../helpers/uploadCV")
 const { EMAIL } = require("../helpers/env-var")
 const User = require("../models/User")
 const Certification = require("../models/Certification")
@@ -93,50 +94,11 @@ const updateAboutMe = async (req = request, res = response) => {
          admin.image = resp.secure_url
       }
 
-      if (cv) {
-
-         if (admin.CV !== "") {
-            const aux = admin.CV.split("/").pop()
-            const public_id = aux.split(".")[0]
-            const { result } = await destroy(`portfolio/aboutMe/${public_id}`)
-
-            if (result !== 'ok') {
-               return res.status(404).json({
-                  ok: false,
-                  msg: `PDF don't found in path: portfolio/aboutMe/${public_id}`
-               })
-            }
-         }
-
-         const resume = cv[0]
-         const bitmap = await fs.readFileSync(resume.path)
-         const b64 = bitmap.toString('base64');
-
-         const data = `data:${resume.mimetype};base64,${b64}`
-
-         const resp = await upload(data, { folder: `portfolio/aboutMe/` })
-
-         if (!resp.secure_url) {
-            return res.status(500).json({
-               ok: false,
-               msg: "cloudinary"
-            })
-         }
-
-         fs.unlink(resume.path, (error) => {
-            if (error) {
-               throw error
-            }
-         })
-
-         admin.CV = resp.secure_url
-      }
-
       admin.fullname = fullname
       admin.description = description
 
-      const certificationsProspectus = [...JSON.parse( certifications )]
-      
+      const certificationsProspectus = [...JSON.parse(certifications)]
+
       await Certification.deleteMany({})
 
       const certificationsPromises = certificationsProspectus.map(async (cer) => {
@@ -150,7 +112,7 @@ const updateAboutMe = async (req = request, res = response) => {
       admin.certifications = [...realCertifications]
 
       const skillsProspectus = [...JSON.parse(skills)]
-      
+
       await Skill.deleteMany({})
 
       const skillsPromises = skillsProspectus.map(async (s) => {
@@ -191,15 +153,27 @@ const getResume = async (_ = request, res = response) => {
 
       const url = admin.CV
 
+      if (!url) {
+         return res.status(404).json({
+            ok: false,
+            msg: "not CV"
+         })
+      }
+
       https.get(url, function (file) {
+         if (file.statusCode !== 200) {
+            file.resume();
+            return res.status(file.statusCode).send("Error downloading PDF");
+         }
+
          res.set('Content-disposition', 'attachment; filename=' + encodeURI("Carlos_Huguez_Resume.pdf"));
          res.set('Content-Type', "application/pdf");
+
          file.pipe(res);
-      })
-
-
-      return res.status(200)
-
+      }).on('error', function (err) {
+         console.error(err);
+         return res.status(500).send("Error downloading PDF");
+      });
    } catch (error) {
       console.log(error);
       return res.status(500).json({
@@ -209,8 +183,39 @@ const getResume = async (_ = request, res = response) => {
    }
 }
 
+const updateResume = async (req = request, res = response) => {
+   try {
+      const uid = req.uid
+      const { cv } = req.files
+
+      const admin = await User.findById(uid)
+
+      if (!admin) {
+         return res.status(404).json({
+            ok: false,
+            msg: "not ADMIN"
+         })
+      }
+
+      admin.CV = await uploadCV(admin.CV, cv)
+
+      await admin.save()      
+
+      return res.status(200).json({
+         ok: true,
+      })
+   } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+         ok: false,
+         msg: "Error - updateResume controller",
+      })
+   }
+}
+
 module.exports = {
    getAboutMe,
    updateAboutMe,
    getResume,
+   updateResume
 }

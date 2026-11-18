@@ -21,13 +21,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-const { getAboutMe, updateAboutMe, getResume } = require("../controllers/user")
+const { getAboutMe, updateAboutMe, getResume, updateResume } = require("../controllers/user")
 const validarCampos = require("../middleware/validarCampos")
 const validarJWT = require("../middleware/validateJWT")
 
 router.get("/aboutMe", getAboutMe)
 
 router.get("/getResume", getResume)
+
+router.use(validarJWT)
+
+router.put("/updateResume", [
+   upload.fields([{ name: 'cv', maxCount: 1 }]),
+   validarCampos,
+], updateResume )
 
 router.put("/aboutMe", [
       upload.fields([{ name: 'photo', maxCount: 1 }, { name: "profile-image", maxCount: 1 }]),
@@ -59,7 +66,6 @@ router.put("/aboutMe", [
          .isObject({ strict: true })
          .withMessage("Each certification must be an object"),
    ],
-   validarJWT,
    validarCampos,
    updateAboutMe
 );
