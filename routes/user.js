@@ -47,24 +47,9 @@ router.put("/aboutMe", [
       body("certifications.*")
          .isObject({ strict: true })
          .withMessage("Each certification must be an object"),
-      body("certifications.*.image")
-         .isString()
-         .withMessage("image must be a string")
-         .notEmpty()
-         .withMessage("image is required"),
-      body("certifications.*.title")
-         .isString()
-         .withMessage("title must be a string")
-         .notEmpty()
-         .withMessage("title is required"),
-      body("certifications.*.link")
-         .isString()
-         .withMessage("link must be a string")
-         .notEmpty()
-         .withMessage("link is required"),
       body("skills.*")
          .isObject({ strict: true })
-         .withMessage("Each certification must be an object"),
+         .withMessage("Each skill must be an object"),
    ],
    validarCampos,
    updateAboutMe

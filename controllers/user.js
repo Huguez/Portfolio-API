@@ -13,7 +13,7 @@ const getAboutMe = async (req = request, res = response) => {
    try {
 
       const admin = await User.findOne({ email: adminEmail })
-         .populate("certifications", "imagen title link")
+         .populate("certifications", "image title link")
          .populate("skills", "name stars");
 
       if (!admin) {
@@ -102,6 +102,7 @@ const updateAboutMe = async (req = request, res = response) => {
       await Certification.deleteMany({})
 
       const certificationsPromises = certificationsProspectus.map(async (cer) => {
+         console.log("cer.image: ", cer.image);
          const certification = new Certification(cer)
          await certification.save()
          return certification._id;
